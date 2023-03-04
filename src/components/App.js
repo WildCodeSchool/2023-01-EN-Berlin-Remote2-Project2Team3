@@ -1,7 +1,7 @@
 //import React from "react";
-import PortraitGame from "./Components/PortraitGame.js";
+import PortraitGame from "./PortraitGame.js";
 
-export default function App() {
+const App = () => {
   return (
     <div>
       <h1>This is going to be a great Game!</h1>
@@ -9,3 +9,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;

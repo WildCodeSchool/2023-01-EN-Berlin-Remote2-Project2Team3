@@ -1,11 +1,11 @@
 const getData = async () => {
-  const myData = await fetch("https://thronesapi.com/api/v2/Characters", {
+  const response = await fetch("https://thronesapi.com/api/v2/Characters", {
     method: "GET",
   })
-    .then((response) => response.json())
-    .then((arr) => digestTheData(arr));
-  console.log(myData);
-  return myData;
+  const arr = digestTheData(await response.json());
+  
+  console.log(arr);
+  return arr;
 };
 
 /* API DESCRIPTION
@@ -100,6 +100,4 @@ const digestTheData = (data) => {
   return portraitData;
 };
 
-  const data = getData(); //array of objects
-  console.log(data);
-  export default data;
+  export default getData;

@@ -1,3 +1,4 @@
+import React from "react";
 import PortraitGame from "./PortraitGame.js";
 
 const App = () => {

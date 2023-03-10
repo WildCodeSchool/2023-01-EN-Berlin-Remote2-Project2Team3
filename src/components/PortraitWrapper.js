@@ -1,9 +1,9 @@
 const getData = async () => {
   const response = await fetch("https://thronesapi.com/api/v2/Characters", {
     method: "GET",
-  })
+  });
   const arr = await response.json();
-  
+
   return arr;
 };
 
@@ -52,20 +52,19 @@ export const digestTheData = (data) => {
     ["Jamie", "Jaime"],
     ["Cateyln", "Catelyn"],
     ["Ramsey", "Ramsay"],
+    ["Rob ", "Robb "],
   ]; //array of arrays of strings
 
   const fixData = (char) => {
-    typoFixes.forEach((pair) =>
-    char.firstName === pair[0] ? (char.firstName = pair[1]) : null
-    );
-    typoFixes.forEach((pair) =>
-    char.fullName.includes(pair[0])
-    ? char.fullName.replace(pair[0], pair[1])
+    char.isCorrect = false;
+    typoFixes.forEach((pair) => {
+      char.fullName.includes(pair[0])
+        ? char.fullName = char.fullName.replace(pair[0], pair[1])
         : null
-        );
-        return char;
+  });
+    return char;
   };
-  
+
   const fixedData = data.map(fixData);
 
   const getRandomNumber = (maximum) => Math.floor(Math.random() * maximum);
@@ -87,7 +86,7 @@ export const digestTheData = (data) => {
   };
 
   const shuffledData = shuffleArr(fixedData);
-  
+
   const maxAnswers = Math.floor(shuffledData.length / 10); //number (integer)
   // 10 is the number of questions per game
 

@@ -1,7 +1,7 @@
 import React from "react";
 
-const CharButton = () => {
-    return <h1>Here be the button</h1>;
+const CharButton = ({name, stage, setter}) => {
+    return <div><h1>{name}</h1></div>;
 }
 
 export default CharButton;

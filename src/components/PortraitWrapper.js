@@ -1,12 +1,13 @@
 const getData = async () => {
-  const myData = await fetch("https://thronesapi.com/api/v2/Characters", {
+  const response = await fetch("https://thronesapi.com/api/v2/Characters", {
     method: "GET",
   })
-    .then((response) => response.json())
-    .then((arr) => digestTheData(arr));
-  console.log(myData);
-  return myData;
+  const arr = await response.json();
+  
+  return arr;
 };
+
+export default getData;
 
 /* API DESCRIPTION
 
@@ -46,7 +47,7 @@ CharacterModel{
 
 */
 
-const digestTheData = (data) => {
+export const digestTheData = (data) => {
   const typoFixes = [
     ["Jamie", "Jaime"],
     ["Cateyln", "Catelyn"],
@@ -65,7 +66,7 @@ const digestTheData = (data) => {
         return char;
   };
   
-  data = data.map(fixData);
+  const fixedData = data.map(fixData);
 
   const getRandomNumber = (maximum) => Math.floor(Math.random() * maximum);
   //maximum is unreachable (Math.floor!)
@@ -85,21 +86,17 @@ const digestTheData = (data) => {
     return order.map((element) => arr[element]);
   };
 
-  data = shuffleArr(data);
+  const shuffledData = shuffleArr(fixedData);
   
-  const maxAnswers = Math.floor(data.length / 10); //number (integer)
+  const maxAnswers = Math.floor(shuffledData.length / 10); //number (integer)
   // 10 is the number of questions per game
 
   const portraitData = [];
-  while (data.length >= maxAnswers) {
-    portraitData.push(data.splice(0, maxAnswers));
+  while (shuffledData.length >= maxAnswers) {
+    portraitData.push(shuffledData.splice(0, maxAnswers));
   }
   portraitData.forEach((question) => {
     question[getRandomNumber(question.length)].isCorrect = true;
   });
   return portraitData;
 };
-
-  const data = getData(); //array of objects
-  console.log(data);
-  export default data;

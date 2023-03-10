@@ -59,33 +59,23 @@ export const digestTheData = (data) => {
     char.isCorrect = false;
     typoFixes.forEach((pair) => {
       char.fullName.includes(pair[0])
-        ? char.fullName = char.fullName.replace(pair[0], pair[1])
-        : null
-  });
+        ? (char.fullName = char.fullName.replace(pair[0], pair[1]))
+        : null;
+    });
     return char;
   };
 
   const fixedData = data.map(fixData);
 
-  const getRandomNumber = (maximum) => Math.floor(Math.random() * maximum);
-  //maximum is unreachable (Math.floor!)
+  const shuffle = (array) =>
+    array
+      .map((element) => {
+        return { value: element, order: Math.random() };
+      })
+      .sort((a, b) => a.order - b.order)
+      .map((element) => element.value);
 
-  const getNRandomNumbers = (maximum, howMany) => {
-    if (howMany <= maximum) {
-      let result = new Set();
-      while (result.size < howMany) result.add(getRandomNumber(maximum));
-      return [...result];
-    } else {
-      console.error("PortraitWrapper - getNRandomNumbers - infinite loop");
-    }
-  };
-
-  const shuffleArr = (arr) => {
-    const order = getNRandomNumbers(arr.length, arr.length);
-    return order.map((element) => arr[element]);
-  };
-
-  const shuffledData = shuffleArr(fixedData);
+  const shuffledData = shuffle(fixedData);
 
   const maxAnswers = Math.floor(shuffledData.length / 10); //number (integer)
   // 10 is the number of questions per game
@@ -94,8 +84,11 @@ export const digestTheData = (data) => {
   while (shuffledData.length >= maxAnswers) {
     portraitData.push(shuffledData.splice(0, maxAnswers));
   }
+
+  const getRandomNumber = (under) => Math.floor(Math.random() * under);
   portraitData.forEach((question) => {
     question[getRandomNumber(question.length)].isCorrect = true;
   });
+
   return portraitData;
 };

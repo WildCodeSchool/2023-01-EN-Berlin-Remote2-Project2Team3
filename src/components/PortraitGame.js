@@ -6,7 +6,7 @@ import { digestTheData } from "./PortraitWrapper.js";
 import Question from "./Question.js";
 
 const PortraitGame = () => {
-  const [gameStage, setGameStage] = useState(0); //gameStage is a number, representing the current question
+  const [gameStage, setGameStage] = useState({question: 0, points: 0}); //gameStage is an object with 2 properties, each holding a numeric value
   const [data, setData] = useState([[{fullName: "The database is loading", isCorrect: true}],[],[],[],[],[],[],[],[],[]]);
   useEffect(() => {
     (async function () {
@@ -15,15 +15,14 @@ const PortraitGame = () => {
       setData(digestTheData(rawData));
     })();
   }, [setData]);
-  gameStage < 10 ? console.log(`Question ${gameStage + 1} out of 10`) : console.log("Game over");
-  console.log(data[gameStage])
+  gameStage.question < 10 ? console.log(`Question ${gameStage.question + 1} out of 10, Points: ${gameStage.points}`) : console.log("Game over");
   return (
     <>
-      <h1>Here be points</h1>
-      {gameStage < 10 ? (
-        <Question data={data[gameStage]} setGameStage={setGameStage}  />
+      <h1>{gameStage.points} points</h1>
+      {gameStage.question < 10 ? (
+        <Question data={data[gameStage.question]} setGameStage={setGameStage}  />
       ) : (
-        <h1>Here be results</h1>
+        <h1>{`${gameStage.points} out of 10`}</h1>
       )}
     </>
   );

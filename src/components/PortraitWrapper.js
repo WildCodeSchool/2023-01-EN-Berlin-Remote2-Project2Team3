@@ -1,22 +1,25 @@
-let myResponse = await fetch("https://thronesapi.com/api/v2/Characters", {
-  method: "GET",
-}); //Response object
+const getData = async () => {
+  const response = await fetch("https://thronesapi.com/api/v2/Characters", {
+    method: "GET",
+  });
+  const arr = await response.json();
 
-let data = await myResponse.json(); //array of objects
+  return arr;
+};
 
-export default data;
+export default getData;
 
 /* API DESCRIPTION
 
 CharacterModel{
-
+  
     id	integer($int32)
     A unique number that identifies this character.
-
+    
     firstName	string
     nullable: true
     The character's first name.
-
+    
     lastName	string
     nullable: true
     The character's last name.
@@ -24,19 +27,19 @@ CharacterModel{
     fullName	string
     nullable: true
     The First + Last name of the character.
-
+    
     title	string
     nullable: true
     The character's formal title.
-
+    
     family	string
     nullable: true
     The character's family name.
-
+    
     image	string
     nullable: true
     The character's picture filename
-
+    
     imageUrl	string
     nullable: true
     The character's picture url
@@ -44,20 +47,48 @@ CharacterModel{
 
 */
 
-const getRandomNumber = (maximum) => Math.floor(Math.random() * maximum);
+export const digestTheData = (data) => {
+  const typoFixes = [
+    ["Jamie", "Jaime"],
+    ["Cateyln", "Catelyn"],
+    ["Ramsey", "Ramsay"],
+    ["Rob ", "Robb "],
+  ]; //array of arrays of strings
 
-const getNRandomNumbers = (maximum, howMany) => {
-  if (howMany <= maximum) {
-    let result = new Set();
-    while (result.size < howMany) result.add(getRandomNumber(maximum));
-    return [...result];
-  } else {
-    console.error("PortraitWrapper - getNRandomNumbers - infinite loop");
+  const fixData = (char) => {
+    char.isCorrect = false;
+    typoFixes.forEach((pair) => {
+      char.fullName.includes(pair[0])
+        ? (char.fullName = char.fullName.replace(pair[0], pair[1]))
+        : null;
+    });
+    return char;
+  };
+
+  const fixedData = data.map(fixData);
+
+  const shuffle = (array) =>
+    array
+      .map((element) => {
+        return { value: element, order: Math.random() };
+      })
+      .sort((a, b) => a.order - b.order)
+      .map((element) => element.value);
+
+  const shuffledData = shuffle(fixedData);
+
+  const maxAnswers = Math.floor(shuffledData.length / 10); //number (integer)
+  // 10 is the number of questions per game
+
+  const portraitData = [];
+  while (shuffledData.length >= maxAnswers) {
+    portraitData.push(shuffledData.splice(0, maxAnswers));
   }
-};
 
-export const getNRandomChars = (dataArray, howMany) => {
-  return getNRandomNumbers(dataArray.length, howMany).map(
-    (number) => dataArray[number]
-  );
+  const getRandomNumber = (under) => Math.floor(Math.random() * under);
+  portraitData.forEach((question) => {
+    question[getRandomNumber(question.length)].isCorrect = true;
+  });
+
+  return portraitData;
 };

@@ -7,7 +7,7 @@ import Question from "./Question.js";
 
 const PortraitGame = () => {
   const [gameStage, setGameStage] = useState({question: 0, points: 0}); //gameStage is an object with 2 properties, each holding a numeric value
-  const [data, setData] = useState([[{fullName: "The database is loading", isCorrect: true}],[],[],[],[],[],[],[],[],[]]);
+  const [data, setData] = useState([[{id: 1, fullName: "The database is loading", isCorrect: true}],[],[],[],[],[],[],[],[],[]]);
   useEffect(() => {
     (async function () {
       const rawData = await getData();

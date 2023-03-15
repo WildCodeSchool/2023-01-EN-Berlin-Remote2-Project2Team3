@@ -1,14 +1,26 @@
 import React from "react";
-import CharButton from "./CharButton.js"
+import CharButton from "./CharButton.js";
 
-const Question = ({data, setGameStage}) => {
+const Question = ({ data, setGameStage }) => {
   return (
     <>
       <h1>Who is this?</h1>
-      <h1>Here be the picture</h1>
-      <img src = {data.filter(character => character.isCorrect)[0].imageUrl} />
+      <div
+        onClick={() => {
+          setGameStage((gs) => ({ ...gs, question: gs.question + 1 }));
+          console.log("question skipped");
+        }}
+      >
+        <h3>Skip question</h3>
+      </div>
+      <img src={data.filter((character) => character.isCorrect)[0].imageUrl} />
       {data.map((character) => (
-        <CharButton name={character.fullName} setGameStage={setGameStage} correct={character.isCorrect} />
+        <CharButton
+          key={character.id.toString()}
+          name={character.fullName}
+          setGameStage={setGameStage}
+          correct={character.isCorrect}
+        />
       ))}
     </>
   );

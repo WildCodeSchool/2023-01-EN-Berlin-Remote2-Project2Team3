@@ -2,14 +2,18 @@ import React from "react";
 
 const CharButton = ({ name, setGameStage, correct }) => {
   return (
-    <div
+    <button
+      className="char-button"
       onClick={() => {
-        setGameStage( gs => {return correct? {...gs, question: gs.question + 1, points: gs.points + 1} : {...gs, question: gs.question + 1}});
-        correct ? console.log("correct answer!") : console.log("wrong answer!")
+        setGameStage((gs) => {
+          return correct
+            ? { ...gs, question: gs.question + 1, points: gs.points + 1 }
+            : { ...gs, question: gs.question + 1 };
+        });
       }}
     >
-      <h2>{name}</h2>
-    </div>
+      {name}
+    </button>
   );
 };
 

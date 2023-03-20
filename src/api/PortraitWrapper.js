@@ -65,15 +65,21 @@ export const digestTheData = (data) => {
     return char;
   };
 
-  const fixedData = data.map(fixData);
+  const fixedData = data.map(fixData).filter(char => char.id !== 34);
+  console.log(fixedData[1])
 
-  const shuffle = (array) =>
-    array
-      .map((element) => {
-        return { value: element, order: Math.random() };
-      })
-      .sort((a, b) => a.order - b.order)
-      .map((element) => element.value);
+  //Fisher-Yates shuffle
+  const shuffle = (array) => {
+    let curId = array.length;
+    while (0 !== curId) {
+      let randId = Math.floor(Math.random() * curId);
+      curId -= 1;
+      let tmp = array[curId];
+      array[curId] = array[randId];
+      array[randId] = tmp;
+    }
+    return array;
+  };
 
   const shuffledData = shuffle(fixedData);
 

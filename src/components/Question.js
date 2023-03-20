@@ -2,18 +2,21 @@ import React from "react";
 import CharButton from "./CharButton.js";
 
 const Question = ({ data, setGameStage }) => {
+  const answer = data.filter(character => character.isCorrect)[0];
   return (
-    <>
-      <h1>Who is this?</h1>
-      <div
-        onClick={() => {
-          setGameStage((gs) => ({ ...gs, question: gs.question + 1 }));
-          console.log("question skipped");
-        }}
-      >
-        <h3>Skip question</h3>
-      </div>
-      <img src={data.filter((character) => character.isCorrect)[0].imageUrl} />
+    <div className="question">
+      <h2>Who is this?</h2>
+      <CharButton
+      name="Skip question"
+      setGameStage={setGameStage}
+      correct={false}
+      />
+      <img
+        className="char-image"
+        src={answer.imageUrl}
+        alt={answer.fullName}
+      />
+      <div className="choices">
       {data.map((character) => (
         <CharButton
           key={character.id.toString()}
@@ -22,7 +25,8 @@ const Question = ({ data, setGameStage }) => {
           correct={character.isCorrect}
         />
       ))}
-    </>
+      </div>
+    </div>
   );
 };
 

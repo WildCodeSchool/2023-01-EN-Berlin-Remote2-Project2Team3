@@ -2,29 +2,25 @@ import React from "react";
 import CharButton from "./CharButton.js";
 
 const Question = ({ data, setGameStage }) => {
-  const answer = data.filter(character => character.isCorrect)[0];
+  const answer = data.filter((character) => character.isCorrect)[0];
   return (
     <div className="question">
       <h2>Who is this?</h2>
-      <CharButton
-      name="Skip question"
-      setGameStage={setGameStage}
-      correct={false}
-      />
-      <img
-        className="char-image"
-        src={answer.imageUrl}
-        alt={answer.fullName}
-      />
+      <img className="char-image" src={answer.imageUrl} alt={answer.fullName} />
       <div className="choices">
-      {data.map((character) => (
+        {data.map((character) => (
+          <CharButton
+            key={character.id.toString()}
+            name={character.fullName}
+            setGameStage={setGameStage}
+            correct={character.isCorrect}
+          />
+        ))}
         <CharButton
-          key={character.id.toString()}
-          name={character.fullName}
+          name="Skip question"
           setGameStage={setGameStage}
-          correct={character.isCorrect}
+          correct={false}
         />
-      ))}
       </div>
     </div>
   );

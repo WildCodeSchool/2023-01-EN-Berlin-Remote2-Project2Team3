@@ -65,8 +65,8 @@ export const digestTheData = (data) => {
     return char;
   };
 
-  const fixedData = data.map(fixData).filter(char => char.id !== 34);
-  console.log(fixedData[1])
+  //Fix typos, remove duplicate
+  const fixedData = data.map(fixData).filter((char) => char.id !== 34);
 
   //Fisher-Yates shuffle
   const shuffle = (array) => {
